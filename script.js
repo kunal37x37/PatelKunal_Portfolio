@@ -1,25 +1,31 @@
-// Professional Aurora Galaxy Portfolio JavaScript - OPTIMIZED
+// Professional Aurora Galaxy Portfolio JavaScript - ULTRA OPTIMIZED FOR MOBILE
 
-// Detect mobile device
+// Detect mobile device - IMPROVED
 const isMobile = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768;
 };
 
-// FIREWORKS SYSTEM - ULTRA SMOOTH
+// Performance optimization
+let isPerformanceMode = false;
+let lastAnimationFrame = 0;
+const ANIMATION_THROTTLE = 1000 / 60; // 60fps
+
+// FIREWORKS SYSTEM - MOBILE OPTIMIZED
 let clickCount = 0;
 let fireworksActive = false;
 let clickTimeout;
 let fireworksTimeout;
 let volume = 0.3;
-const CLICKS_NEEDED = 10; // Changed from 10 to 5 for faster activation
-const FIREWORKS_DURATION = 90000; // 90 seconds
+const CLICKS_NEEDED = 3; // Reduced for mobile
+const FIREWORKS_DURATION = 45000; // Reduced to 45 seconds for mobile
 
-// Tutorial tracking - SIMPLE SESSION BASED
+// Tutorial tracking
 let tutorialShown = false;
 
 // Performance tracking
 let lastClickTime = 0;
-const CLICK_DELAY = 100; // 100ms between clicks counts
+const CLICK_DELAY = 150; // Increased for mobile touch
 
 // DOM Elements cache
 let audioElement;
@@ -32,6 +38,10 @@ let endedNotification;
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Portfolio Initializing...');
+    
+    // Detect performance mode
+    isPerformanceMode = isMobile();
+    console.log(`📱 Mobile: ${isMobile()}, Performance Mode: ${isPerformanceMode}`);
 
     // Set current year in footer
     const currentYearElement = document.getElementById('currentYear');
@@ -39,13 +49,18 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearElement.textContent = new Date().getFullYear();
     }
 
-    // Initialize background effects (deferred for performance)
+    // Initialize background effects (SIMPLIFIED FOR MOBILE)
     setTimeout(() => {
         initEnhancedStarfield();
-        initFrequentStarfall();
-        initShootingStars();
-        initMeteorShower();
-        initSpaceDebris();
+        if (!isMobile()) {
+            initFrequentStarfall();
+            initShootingStars();
+            initMeteorShower();
+            initSpaceDebris();
+        } else {
+            // Mobile-optimized background
+            initMobileBackground();
+        }
     }, 100);
 
     // Initialize cursor system (only on desktop)
@@ -54,6 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => initCursorSystem(), 200);
     } else {
         document.body.classList.add('mobile');
+        // Disable hover effects on mobile
+        document.body.classList.add('touch-device');
     }
 
     // Initialize theme
@@ -80,11 +97,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize progress bars
     setTimeout(() => initProgressBars(), 1000);
 
-    // Initialize rotating cube
-    setTimeout(() => initRotatingCube(), 500);
+    // Initialize rotating cube (desktop only)
+    if (!isMobile()) {
+        setTimeout(() => initRotatingCube(), 500);
+    }
 
-    // Initialize hover effects
-    setTimeout(() => initHoverEffects(), 700);
+    // Initialize hover effects (desktop only)
+    if (!isMobile()) {
+        setTimeout(() => initHoverEffects(), 700);
+    }
 
     // LOAD PROFILE IMAGE FIRST - HIGH PRIORITY
     setTimeout(() => loadProfileImageWithPriority(), 50);
@@ -92,14 +113,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize enhanced fireworks system
     setTimeout(() => initEnhancedFireworksSystem(), 100);
 
-    // Show tutorial notification on page load (after 1.5 seconds)
+    // Show tutorial notification on page load
     setTimeout(() => {
         if (!fireworksActive && !tutorialShown) {
             console.log('🎯 Showing tutorial...');
             showTutorial();
         }
-    }, 1500);
+    }, 2000); // Increased for mobile
 });
+
+// MOBILE OPTIMIZED BACKGROUND
+function initMobileBackground() {
+    const starfield = document.getElementById('starfield');
+    if (!starfield) return;
+
+    // Reduced star count for mobile
+    createStarLayer(starfield, 100, 1, 0.8, 'white'); // Reduced from 300
+    createStarLayer(starfield, 80, 2, 0.6, '#e2e8f0'); // Reduced from 200
+    
+    // Disable intensive animations
+    console.log('📱 Mobile background optimized');
+}
 
 // PROFILE IMAGE LOADING - ULTRA FAST
 function loadProfileImageWithPriority() {
@@ -114,8 +148,8 @@ function loadProfileImageWithPriority() {
         'assets/profile_image.png',
 
         // Google Drive alternatives
-        'https://drive.google.com/thumbnail?id=1hkWWDzJZy8C501FoFcOufxlaIcYT_Aa9&sz=w800',
-        'https://drive.google.com/uc?export=view&id=1hkWWDzJZy8C501FoFcOufxlaIcYT_Aa9',
+        'https://drive.google.com/thumbnail?id=1hkWWDzJZy8C501FoFcOufxlaIcYT_Aa9&sz=w400', // Smaller size for mobile
+        'https://drive.google.com/uc?export=view&id=1hkWWDzJZy8C501FoFcOufxlaIcYT_Aa9&size=w400',
 
         // Fallback - placeholder
         'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23111"/><text x="50" y="50" font-family="Arial" font-size="14" fill="%23FFD700" text-anchor="middle" dy=".3em">GS</text></svg>'
@@ -145,12 +179,12 @@ function loadProfileImageWithPriority() {
                 reject();
             };
 
-            // Set timeout
+            // Shorter timeout for mobile
             setTimeout(() => {
                 if (!img.complete && !loaded) {
                     reject();
                 }
-            }, 2000);
+            }, isMobile() ? 1000 : 2000);
 
             img.src = source;
         });
@@ -183,7 +217,7 @@ function loadProfileImageWithPriority() {
     tryLoadImages();
 }
 
-// INITIALIZE ENHANCED FIREWORKS SYSTEM - OPTIMIZED
+// INITIALIZE ENHANCED FIREWORKS SYSTEM - MOBILE OPTIMIZED
 function initEnhancedFireworksSystem() {
     console.log('🎆 Initializing fireworks system...');
 
@@ -202,97 +236,142 @@ function initEnhancedFireworksSystem() {
         audioElement.preload = 'auto';
     }
 
-    // Add click counter to the whole document - FAST RESPONSE
+    // Add click counter - OPTIMIZED FOR MOBILE
     document.addEventListener('click', handleFireworksClick, { passive: true });
-    document.addEventListener('touchstart', handleFireworksClick, { passive: true });
+    
+    // Mobile-specific touch handling
+    if (isMobile()) {
+        document.addEventListener('touchstart', handleMobileTouch, { passive: true });
+    }
 
     // Initialize sound control button
     const soundToggle = document.getElementById('soundToggle');
     if (soundToggle) {
         soundToggle.style.cursor = 'pointer';
         soundToggle.style.userSelect = 'none';
-        soundToggle.addEventListener('click', toggleSound, { passive: true });
+        soundToggle.addEventListener(isMobile() ? 'touchend' : 'click', toggleSound, { passive: true });
         updateSoundTogglePosition();
         window.addEventListener('resize', updateSoundTogglePosition, { passive: true });
     }
 
-    // Setup tutorial notification buttons - FIXED CLICK HANDLERS
+    // Setup tutorial notification buttons - MOBILE OPTIMIZED
     const startFireworksNowBtn = document.getElementById('startFireworksNow');
     const closeTutorialBtn = document.getElementById('closeTutorial');
 
-    // Setup tutorial buttons with FIXED event handlers
+    // Setup tutorial buttons with TOUCH OPTIMIZED handlers
     if (startFireworksNowBtn) {
-        startFireworksNowBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        const startHandler = function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             console.log('🚀 Start Now clicked - Activating fireworks!');
-            clickCount = CLICKS_NEEDED; // INSTANT ACTIVATION
+            clickCount = CLICKS_NEEDED;
             updateCounter();
             hideNotification(tutorialNotification);
             tutorialShown = true;
             setTimeout(() => activateFireworks(), 100);
-        });
-
+            
+            // Visual feedback for mobile
+            if (isMobile()) {
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 200);
+            }
+        };
+        
+        startFireworksNowBtn.addEventListener(isMobile() ? 'touchend' : 'click', startHandler);
+        
         // Add visual feedback
-        startFireworksNowBtn.addEventListener('mousedown', function() {
-            this.style.transform = 'translateY(2px) scale(0.98)';
-        });
-
-        startFireworksNowBtn.addEventListener('mouseup', function() {
-            this.style.transform = '';
-        });
-
-        startFireworksNowBtn.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-        });
+        if (!isMobile()) {
+            startFireworksNowBtn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(2px) scale(0.98)';
+            });
+            
+            startFireworksNowBtn.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+            
+            startFireworksNowBtn.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        }
     }
 
     if (closeTutorialBtn) {
-        closeTutorialBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        const closeHandler = function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             console.log('✕ Closing tutorial');
             hideNotification(tutorialNotification);
             tutorialShown = true;
             showNotification(counterNotification);
-        });
-
-        // Add visual feedback
-        closeTutorialBtn.addEventListener('mousedown', function() {
-            this.style.transform = 'translateY(2px) scale(0.98)';
-        });
-
-        closeTutorialBtn.addEventListener('mouseup', function() {
-            this.style.transform = '';
-        });
-
-        closeTutorialBtn.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-        });
+            
+            // Visual feedback for mobile
+            if (isMobile()) {
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 200);
+            }
+        };
+        
+        closeTutorialBtn.addEventListener(isMobile() ? 'touchend' : 'click', closeHandler);
+        
+        // Add visual feedback for desktop
+        if (!isMobile()) {
+            closeTutorialBtn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(2px) scale(0.98)';
+            });
+            
+            closeTutorialBtn.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+            
+            closeTutorialBtn.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        }
     }
 
     // Setup counter notification
     const closeCounterBtn = document.getElementById('closeCounter');
     if (closeCounterBtn) {
-        closeCounterBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        const closeCounterHandler = function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             console.log('✕ Closing counter');
             hideNotification(counterNotification);
-        });
-
-        // Add visual feedback
-        closeCounterBtn.addEventListener('mousedown', function() {
-            this.style.transform = 'translateY(2px) scale(0.98)';
-        });
-
-        closeCounterBtn.addEventListener('mouseup', function() {
-            this.style.transform = '';
-        });
-
-        closeCounterBtn.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-        });
+            
+            // Visual feedback for mobile
+            if (isMobile()) {
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 200);
+            }
+        };
+        
+        closeCounterBtn.addEventListener(isMobile() ? 'touchend' : 'click', closeCounterHandler);
+        
+        if (!isMobile()) {
+            closeCounterBtn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(2px) scale(0.98)';
+            });
+            
+            closeCounterBtn.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+            
+            closeCounterBtn.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        }
     }
 
     // Setup active notification controls
@@ -301,56 +380,159 @@ function initEnhancedFireworksSystem() {
     const volumeDownBtn = document.getElementById('volumeDownBtn');
     const muteBtn = document.getElementById('muteBtn');
 
-    // Setup active notification buttons
-    if (stopFireworksBtn) {
-        stopFireworksBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            endFireworks();
-        });
-    }
-
-    if (volumeUpBtn) {
-        volumeUpBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            volumeUp();
-        });
-    }
-
-    if (volumeDownBtn) {
-        volumeDownBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            volumeDown();
-        });
-    }
-
-    if (muteBtn) {
-        muteBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMute();
-        });
-    }
+    // Setup all active notification buttons with mobile optimization
+    [stopFireworksBtn, volumeUpBtn, volumeDownBtn, muteBtn].forEach(btn => {
+        if (btn) {
+            const eventType = isMobile() ? 'touchend' : 'click';
+            btn.addEventListener(eventType, function(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                // Mobile visual feedback
+                if (isMobile()) {
+                    this.style.opacity = '0.7';
+                    setTimeout(() => {
+                        this.style.opacity = '1';
+                    }, 200);
+                }
+                
+                // Call appropriate function
+                if (btn === stopFireworksBtn) endFireworks();
+                if (btn === volumeUpBtn) volumeUp();
+                if (btn === volumeDownBtn) volumeDown();
+                if (btn === muteBtn) toggleMute();
+            });
+        }
+    });
 
     // Setup restart button
     const restartFireworksBtn = document.getElementById('restartFireworksBtn');
     if (restartFireworksBtn) {
-        restartFireworksBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        const eventType = isMobile() ? 'touchend' : 'click';
+        restartFireworksBtn.addEventListener(eventType, function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             restartFireworks();
+            
+            // Mobile visual feedback
+            if (isMobile()) {
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 200);
+            }
         });
     }
 
-    // Add firework patterns
-    addFireworkPatterns();
+    // Add firework patterns (SIMPLIFIED FOR MOBILE)
+    if (!isMobile()) {
+        addFireworkPatterns();
+    }
 
     // Initialize notification state
     updateCounter();
 
     console.log('✅ Fireworks system ready!');
+}
+
+// MOBILE TOUCH HANDLING - OPTIMIZED
+function handleMobileTouch(e) {
+    if (fireworksActive) return;
+
+    // Prevent multiple touches
+    const now = Date.now();
+    if (now - lastClickTime < CLICK_DELAY) return;
+    lastClickTime = now;
+
+    // Get touch position
+    const touch = e.touches[0] || e.changedTouches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+
+    // Don't count touches on interactive elements
+    if (target && target.closest('a, button, input, textarea, .nav-item, .theme-switch, .sound-control, .fireworks-notification')) {
+        return;
+    }
+
+    // Count the touch
+    clickCount++;
+    console.log(`📱 Touch ${clickCount}/${CLICKS_NEEDED}`);
+    updateCounter();
+
+    // Show tutorial if this is the first touch
+    if (clickCount === 1 && !tutorialShown) {
+        showTutorial();
+    }
+
+    // Clear previous timeout
+    if (clickTimeout) {
+        clearTimeout(clickTimeout);
+    }
+
+    // Reset counter after delay
+    clickTimeout = setTimeout(() => {
+        if (clickCount < CLICKS_NEEDED) {
+            console.log('⏰ Touch counter reset');
+            clickCount = 0;
+            updateCounter();
+            hideNotification(counterNotification);
+        }
+    }, isMobile() ? 2500 : 2000); // Longer timeout for mobile
+
+    // ACTIVATE on required clicks
+    if (clickCount >= CLICKS_NEEDED && !fireworksActive) {
+        console.log('🎉 TOUCHES REACHED! Activating fireworks...');
+        activateFireworks();
+    }
+}
+
+// HANDLE FIREWORKS CLICK - MOBILE OPTIMIZED
+function handleFireworksClick(e) {
+    if (fireworksActive || isMobile()) return; // Mobile uses touch events
+
+    // Prevent double counting
+    const now = Date.now();
+    if (now - lastClickTime < CLICK_DELAY) return;
+    lastClickTime = now;
+
+    // Don't count clicks on interactive elements
+    if (e.target.closest('a, button, input, textarea, .nav-item, .theme-switch, .sound-control, .fireworks-notification')) {
+        return;
+    }
+
+    // INSTANT CLICK COUNT
+    clickCount++;
+    console.log(`🎯 Click ${clickCount}/${CLICKS_NEEDED}`);
+    updateCounter();
+
+    // Show tutorial if this is the first click
+    if (clickCount === 1 && !tutorialShown) {
+        showTutorial();
+    }
+
+    // Clear previous timeout
+    if (clickTimeout) {
+        clearTimeout(clickTimeout);
+    }
+
+    // Reset counter after delay
+    clickTimeout = setTimeout(() => {
+        if (clickCount < CLICKS_NEEDED) {
+            console.log('⏰ Click counter reset');
+            clickCount = 0;
+            updateCounter();
+            hideNotification(counterNotification);
+        }
+    }, 2000);
+
+    // INSTANT ACTIVATION
+    if (clickCount >= CLICKS_NEEDED && !fireworksActive) {
+        console.log('🎉 CLICKS REACHED! Activating fireworks...');
+        activateFireworks();
+    }
 }
 
 // HIDE ALL NOTIFICATIONS
@@ -375,7 +557,7 @@ function updateSoundTogglePosition() {
         if (activeNotif.classList.contains('show')) {
             soundToggle.style.bottom = `${window.innerHeight - rect.top + 20}px`;
         } else {
-            soundToggle.style.bottom = '100px';
+            soundToggle.style.bottom = isMobile() ? '80px' : '100px';
         }
     }
 }
@@ -388,7 +570,7 @@ function showTutorial() {
     }
 }
 
-// SHOW NOTIFICATION - SMOOTH ANIMATION
+// SHOW NOTIFICATION - MOBILE OPTIMIZED
 function showNotification(notification) {
     if (!notification) return;
 
@@ -398,13 +580,25 @@ function showNotification(notification) {
         notif.style.display = 'none';
     });
 
-    // Show the requested notification with smooth animation
+    // Show the requested notification
     notification.style.display = 'block';
-    requestAnimationFrame(() => {
-        notification.classList.add('show');
-    });
+    
+    // Force reflow for animation
+    notification.offsetHeight;
+    
+    notification.classList.add('show');
 
     updateSoundTogglePosition();
+    
+    // Auto-hide tutorial after 8 seconds on mobile
+    if (notification === tutorialNotification && isMobile()) {
+        setTimeout(() => {
+            if (notification.classList.contains('show') && !fireworksActive) {
+                hideNotification(notification);
+                tutorialShown = true;
+            }
+        }, 8000);
+    }
 }
 
 // HIDE NOTIFICATION
@@ -419,14 +613,13 @@ function hideNotification(notification) {
     updateSoundTogglePosition();
 }
 
-// UPDATE COUNTER DISPLAY - INSTANT UPDATE
+// UPDATE COUNTER DISPLAY
 function updateCounter() {
     const clickCountElement = document.getElementById('clickCount');
     const progressElement = document.getElementById('clickProgress');
 
     if (!clickCountElement || !progressElement) return;
 
-    // INSTANT UPDATE - no animation delay
     clickCountElement.textContent = clickCount;
     progressElement.style.width = `${(clickCount / CLICKS_NEEDED) * 100}%`;
 
@@ -436,53 +629,7 @@ function updateCounter() {
     }
 }
 
-// HANDLE FIREWORKS CLICK - ULTRA RESPONSIVE
-function handleFireworksClick(e) {
-    if (fireworksActive) return;
-
-    // Prevent double counting on mobile
-    const now = Date.now();
-    if (now - lastClickTime < CLICK_DELAY) return;
-    lastClickTime = now;
-
-    // Don't count clicks on interactive elements
-    if (e.target.closest('a, button, input, textarea, .nav-item, .theme-switch, .sound-control, .fireworks-notification')) {
-        return;
-    }
-
-    // INSTANT CLICK COUNT - No delay
-    clickCount++;
-    console.log(`🎯 Click ${clickCount}/${CLICKS_NEEDED}`);
-    updateCounter();
-
-    // Show tutorial if this is the first click
-    if (clickCount === 1 && !tutorialShown) {
-        showTutorial();
-    }
-
-    // Clear previous timeout
-    if (clickTimeout) {
-        clearTimeout(clickTimeout);
-    }
-
-    // Reset counter after 2 seconds (not 3) - FASTER
-    clickTimeout = setTimeout(() => {
-        if (clickCount < CLICKS_NEEDED) {
-            console.log('⏰ Click counter reset');
-            clickCount = 0;
-            updateCounter();
-            hideNotification(counterNotification);
-        }
-    }, 2000);
-
-    // INSTANT ACTIVATION on 5th click
-    if (clickCount >= CLICKS_NEEDED && !fireworksActive) {
-        console.log('🎉 5 CLICKS REACHED! Activating fireworks...');
-        activateFireworks();
-    }
-}
-
-// ACTIVATE FIREWORKS - SMOOTH TRANSITION
+// ACTIVATE FIREWORKS - MOBILE OPTIMIZED
 function activateFireworks() {
     if (fireworksActive) return;
 
@@ -491,13 +638,13 @@ function activateFireworks() {
     clickCount = 0;
     updateCounter();
 
-    // Hide all notifications except active
+    // Hide all notifications
     hideAllNotifications();
 
-    // Add fireworks active class to body
+    // Add fireworks active class
     document.body.classList.add('fireworks-active');
 
-    // Start fireworks sound
+    // Start fireworks sound (autoplay policy handling)
     startFireworksSound();
 
     // Show active notification
@@ -506,10 +653,12 @@ function activateFireworks() {
     // Start countdown timer
     startCountdown();
 
-    // Show celebration text
-    showCelebrationText();
+    // Show celebration text (simplified for mobile)
+    if (!isMobile()) {
+        showCelebrationText();
+    }
 
-    // Start fireworks show
+    // Start optimized fireworks show
     startFireworksShow();
 
     // End fireworks after duration
@@ -542,7 +691,7 @@ function startCountdown() {
     }, 1000);
 }
 
-// VOLUME CONTROLS - INSTANT RESPONSE
+// VOLUME CONTROLS
 function volumeUp() {
     if (volume < 1) {
         volume = Math.min(1, volume + 0.1);
@@ -605,22 +754,47 @@ function toggleSound() {
     updateVolume();
 }
 
-// START FIREWORKS SOUND
+// START FIREWORKS SOUND - MOBILE FRIENDLY
 function startFireworksSound() {
     if (!audioElement) return;
 
-    try {
-        audioElement.currentTime = 0;
-        audioElement.volume = volume;
-        const playPromise = audioElement.play();
-
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log('Audio play failed:', error);
-            });
+    // Mobile browsers require user interaction for audio
+    if (isMobile() && audioElement.paused) {
+        // Try to play with user interaction context
+        const playAudio = () => {
+            try {
+                audioElement.currentTime = 0;
+                audioElement.volume = volume;
+                const playPromise = audioElement.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log('Mobile audio play failed:', error);
+                        // Silently fail for mobile
+                    });
+                }
+            } catch (error) {
+                console.log('Error starting sound on mobile:', error);
+            }
+        };
+        
+        // Try to play immediately
+        playAudio();
+    } else {
+        // Desktop or already playing
+        try {
+            audioElement.currentTime = 0;
+            audioElement.volume = volume;
+            const playPromise = audioElement.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log('Audio play failed:', error);
+                });
+            }
+        } catch (error) {
+            console.log('Error starting sound:', error);
         }
-    } catch (error) {
-        console.log('Error starting sound:', error);
     }
 }
 
@@ -663,13 +837,13 @@ function endFireworks() {
         fireworksContainer.innerHTML = '';
     }
 
-    // Auto-hide ended notification after 5 seconds
+    // Auto-hide ended notification
     setTimeout(() => {
         hideNotification(endedNotification);
-    }, 5000);
+    }, isMobile() ? 3000 : 5000); // Shorter on mobile
 }
 
-// RESTART FIREWORKS - INSTANT
+// RESTART FIREWORKS
 function restartFireworks() {
     hideNotification(endedNotification);
     clickCount = CLICKS_NEEDED;
@@ -677,25 +851,29 @@ function restartFireworks() {
     setTimeout(() => activateFireworks(), 100);
 }
 
-// SHOW CELEBRATION TEXT - SMOOTH
+// SHOW CELEBRATION TEXT - DESKTOP ONLY
 function showCelebrationText() {
+    if (isMobile()) return; // Skip on mobile
+    
     const celebrationText = document.createElement('div');
     celebrationText.className = 'celebration-text';
     celebrationText.textContent = '🎉 FIREWORKS! 🎉';
-    celebrationText.style.position = 'fixed';
-    celebrationText.style.top = '50%';
-    celebrationText.style.left = '50%';
-    celebrationText.style.transform = 'translate(-50%, -50%) scale(0.5)';
-    celebrationText.style.fontSize = '4rem';
-    celebrationText.style.fontWeight = '900';
-    celebrationText.style.background = 'linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff)';
-    celebrationText.style.webkitBackgroundClip = 'text';
-    celebrationText.style.webkitTextFillColor = 'transparent';
-    celebrationText.style.zIndex = '10000';
-    celebrationText.style.opacity = '0';
-    celebrationText.style.pointerEvents = 'none';
-    celebrationText.style.textAlign = 'center';
-    celebrationText.style.transition = 'all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+    celebrationText.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.5);
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        z-index: 10000;
+        opacity: 0;
+        pointer-events: none;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    `;
 
     document.body.appendChild(celebrationText);
 
@@ -721,7 +899,7 @@ function showCelebrationText() {
 
 // ADD FIREWORK PATTERNS
 function addFireworkPatterns() {
-    if (!fireworksContainer) return;
+    if (!fireworksContainer || isMobile()) return; // Skip on mobile
 
     const pattern1 = document.createElement('div');
     pattern1.className = 'firework-pattern pattern-1';
@@ -732,19 +910,27 @@ function addFireworkPatterns() {
     fireworksContainer.appendChild(pattern2);
 }
 
-// CREATE FIREWORKS SHOW - OPTIMIZED PERFORMANCE
+// CREATE FIREWORKS SHOW - HEAVILY OPTIMIZED FOR MOBILE
 function startFireworksShow() {
     if (!fireworksContainer || !fireworksActive) return;
 
     // Clear any existing fireworks
     fireworksContainer.innerHTML = '';
 
-    // Add patterns back
-    addFireworkPatterns();
+    // Add patterns back (desktop only)
+    if (!isMobile()) {
+        addFireworkPatterns();
+    }
 
-    // Performance-optimized firework creation
+    // MOBILE: Simplified fireworks
+    if (isMobile()) {
+        startMobileFireworks();
+        return;
+    }
+
+    // DESKTOP: Full fireworks show
     let lastFireworkTime = 0;
-    const FIREWORK_INTERVAL = 100; // ms between fireworks
+    const FIREWORK_INTERVAL = 150; // Slower for performance
 
     function createOptimizedFirework() {
         if (!fireworksActive) return;
@@ -756,14 +942,14 @@ function startFireworksShow() {
         }
         lastFireworkTime = now;
 
-        // Create multiple fireworks at once for density
-        const batchSize = 3;
+        // Create fewer fireworks for performance
+        const batchSize = 2; // Reduced from 3
         for (let i = 0; i < batchSize; i++) {
             setTimeout(() => {
                 if (fireworksActive) {
                     createFirework();
                 }
-            }, i * 50);
+            }, i * 80); // Increased delay
         }
     }
 
@@ -774,38 +960,106 @@ function startFireworksShow() {
             return;
         }
         createOptimizedFirework();
-    }, 300); // Faster firework bursts
+    }, 500); // Slower interval
 
     // Special effects at intervals
     setTimeout(() => {
-        if (fireworksActive) createSpecialFirework('heart');
-    }, 3000);
+        if (fireworksActive && !isMobile()) createSpecialFirework('heart');
+    }, 5000);
 
     setTimeout(() => {
-        if (fireworksActive) createSpecialFirework('spiral');
-    }, 10000);
+        if (fireworksActive && !isMobile()) createSpecialFirework('spiral');
+    }, 15000);
+}
 
-    setTimeout(() => {
-        if (fireworksActive) createSpecialFirework('star');
-    }, 20000);
+// MOBILE FIREWORKS - SIMPLIFIED
+function startMobileFireworks() {
+    if (!fireworksContainer || !fireworksActive) return;
+    
+    console.log('📱 Starting mobile-optimized fireworks');
+    
+    let fireworkCount = 0;
+    const MAX_FIREWORKS = 30; // Limit for mobile
+    
+    function createMobileFirework() {
+        if (!fireworksActive || fireworkCount >= MAX_FIREWORKS) return;
+        
+        fireworkCount++;
+        
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * (window.innerHeight * 0.7);
+        const colors = ['#FF0000', '#FFD700', '#00FF00', '#0000FF'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Simple particle burst
+        for (let i = 0; i < 15; i++) { // Reduced particles
+            createSimpleParticle(x, y, color);
+        }
+        
+        // Schedule next firework
+        if (fireworksActive && fireworkCount < MAX_FIREWORKS) {
+            setTimeout(createMobileFirework, Math.random() * 1000 + 500);
+        }
+    }
+    
+    // Start with a few fireworks
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+            if (fireworksActive) createMobileFirework();
+        }, i * 300);
+    }
+}
 
-    setTimeout(() => {
-        if (fireworksActive) createSpecialFirework('ring');
-    }, 30000);
+// SIMPLE PARTICLE FOR MOBILE
+function createSimpleParticle(x, y, color) {
+    if (!fireworksContainer || !fireworksActive) return;
+    
+    const particle = document.createElement('div');
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 50 + Math.random() * 50; // Shorter distance
+    const size = 2 + Math.random() * 3; // Smaller size
+    
+    particle.style.cssText = `
+        left: ${x}px;
+        top: ${y}px;
+        background-color: ${color};
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        pointer-events: none;
+        box-shadow: 0 0 ${size * 2}px ${color};
+    `;
+    
+    fireworksContainer.appendChild(particle);
+    
+    // Simple animation
+    const animation = particle.animate([
+        { transform: 'translate(0, 0)', opacity: 1 },
+        { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
+    ], {
+        duration: 1000 + Math.random() * 1000, // Shorter duration
+        easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)'
+    });
+    
+    animation.onfinish = () => {
+        if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+        }
+    };
 }
 
 // OPTIMIZED FIREWORK CREATION FUNCTIONS
 function createFirework() {
-    if (!fireworksContainer || !fireworksActive) return;
+    if (!fireworksContainer || !fireworksActive || isMobile()) return;
 
-    // Use requestAnimationFrame for smoothness
     requestAnimationFrame(() => {
         const startX = Math.random() * window.innerWidth;
         const startY = window.innerHeight;
-        const targetX = startX + (Math.random() * 400 - 200);
-        const targetY = Math.random() * (window.innerHeight * 0.7) + 100;
+        const targetX = startX + (Math.random() * 300 - 150); // Reduced movement
+        const targetY = Math.random() * (window.innerHeight * 0.6) + 100;
 
-        const colors = ['#FF0000', '#FF4500', '#FFD700', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF'];
+        const colors = ['#FF0000', '#FF4500', '#FFD700', '#00FF00', '#0000FF'];
         const color = colors[Math.floor(Math.random() * colors.length)];
 
         const rocket = document.createElement('div');
@@ -817,19 +1071,11 @@ function createFirework() {
             transform: rotate(${Math.random() * 360}deg);
             position: absolute;
             width: 2px;
-            height: 20px;
-            background: linear-gradient(
-        to bottom, 
-        transparent, 
-        ${color} 20%, 
-        ${color} 50%, 
-        white 80%, 
-        transparent
-    );
+            height: 15px; // Shorter
+            background: linear-gradient(to bottom, transparent, ${color} 20%, ${color} 50%, white 80%, transparent);
             pointer-events: none;
-            filter: drop-shadow(0 0 10px ${color}) 
-                     brightness(1.5);
-           box-shadow: 0 0 20px ${color};
+            filter: drop-shadow(0 0 8px ${color}) brightness(1.5);
+            box-shadow: 0 0 15px ${color};
             transform-origin: center bottom;
         `;
 
@@ -840,7 +1086,7 @@ function createFirework() {
             { transform: `translateY(0) rotate(${Math.random() * 360}deg)`, opacity: 0 },
             { transform: `translateY(-${startY - targetY}px) rotate(${Math.random() * 360}deg)`, opacity: 1 }
         ], {
-            duration: 400 + Math.random() * 200,
+            duration: 300 + Math.random() * 150, // Faster
             easing: 'cubic-bezier(0.2, 0.9, 0.1, 1)'
         });
 
@@ -854,7 +1100,7 @@ function createFirework() {
 }
 
 function createExplosion(x, y, color) {
-    if (!fireworksContainer || !fireworksActive) return;
+    if (!fireworksContainer || !fireworksActive || isMobile()) return;
 
     // Create sparkle
     const sparkle = document.createElement('div');
@@ -863,21 +1109,19 @@ function createExplosion(x, y, color) {
         top: ${y}px;
         background-color: ${color};
         position: absolute;
-        width: 8px;
-        height: 8px;
+        width: 6px; // Smaller
+        height: 6px;
         border-radius: 50%;
         filter: blur(1px);
         pointer-events: none;
-        box-shadow: 0 0 100px ${color};
+        box-shadow: 0 0 60px ${color}; // Reduced glow
     `;
 
     fireworksContainer.appendChild(sparkle);
 
     // Animate sparkle
-    sparkle.animate([
-
-    ], {
-        duration: 1500,
+    sparkle.animate([], {
+        duration: 1000, // Faster
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
     }).onfinish = () => {
         if (sparkle.parentNode) {
@@ -885,8 +1129,8 @@ function createExplosion(x, y, color) {
         }
     };
 
-    // Create particles
-    const particleCount = 80;
+    // Create fewer particles
+    const particleCount = isMobile() ? 20 : 40; // Reduced
     for (let i = 0; i < particleCount; i++) {
         createParticle(x, y, color);
     }
@@ -897,8 +1141,8 @@ function createParticle(x, y, color) {
 
     const particle = document.createElement('div');
     const angle = Math.random() * Math.PI * 2;
-    const distance = 150 + Math.random() * 200;
-    const size = 3 + Math.random() * 6;
+    const distance = isMobile() ? 80 + Math.random() * 80 : 100 + Math.random() * 150; // Shorter on mobile
+    const size = isMobile() ? 2 + Math.random() * 3 : 3 + Math.random() * 4; // Smaller on mobile
 
     particle.style.cssText = `
         left: ${x}px;
@@ -909,17 +1153,19 @@ function createParticle(x, y, color) {
         height: ${size}px;
         border-radius: 50%;
         pointer-events: none;
-        box-shadow: 0 0 ${size * 3}px ${color}; /* GLOW EFFECT */
+        box-shadow: 0 0 ${size * 2}px ${color};
     `;
 
     fireworksContainer.appendChild(particle);
 
-    // Simple particle animation
+    // Faster animation on mobile
+    const duration = isMobile() ? 2000 + Math.random() * 1000 : 3000 + Math.random() * 1500;
+    
     particle.animate([
         { transform: 'translate(0, 0)', opacity: 1 },
         { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
     ], {
-        duration: 4000 + Math.random() * 2000,
+        duration: duration,
         easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)'
     }).onfinish = () => {
         if (particle.parentNode) {
@@ -928,55 +1174,34 @@ function createParticle(x, y, color) {
     };
 }
 
-// Special firework patterns (optimized versions)
+// Special firework patterns (desktop only)
 function createSpecialFirework(type) {
-    if (!fireworksContainer || !fireworksActive) return;
+    if (!fireworksContainer || !fireworksActive || isMobile()) return;
 
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 3;
-    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
+    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
 
     const patterns = {
         heart: (x, y, colors) => {
-            for (let i = 0; i < 180; i += 10) {
+            for (let i = 0; i < 90; i += 15) { // Reduced
                 setTimeout(() => {
                     if (!fireworksActive) return;
                     const angle = i * Math.PI / 180;
                     const heartX = 16 * Math.pow(Math.sin(angle), 3);
                     const heartY = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
-                    createParticle(x + heartX * 6, y + heartY * 6, colors[i % colors.length]);
-                }, i * 40);
+                    createParticle(x + heartX * 4, y + heartY * 4, colors[i % colors.length]); // Smaller
+                }, i * 80); // Slower
             }
         },
         spiral: (x, y, colors) => {
-            for (let i = 0; i < 360; i += 15) {
+            for (let i = 0; i < 180; i += 30) { // Reduced
                 setTimeout(() => {
                     if (!fireworksActive) return;
                     const angle = i * Math.PI / 180;
-                    const radius = i * 0.3;
+                    const radius = i * 0.2; // Smaller
                     createParticle(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, colors[Math.floor(i / 72) % colors.length]);
-                }, i * 20);
-            }
-        },
-        star: (x, y, colors) => {
-            const points = 5;
-            for (let i = 0; i <= points * 2; i++) {
-                setTimeout(() => {
-                    if (!fireworksActive) return;
-                    const angle = (Math.PI / points) * i;
-                    const radius = i % 2 === 0 ? 80 : 30;
-                    createParticle(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, colors[i % colors.length]);
-                }, i * 120);
-            }
-        },
-        ring: (x, y, colors) => {
-            for (let i = 0; i < 360; i += 10) {
-                setTimeout(() => {
-                    if (!fireworksActive) return;
-                    const angle = i * Math.PI / 180;
-                    const radius = 120;
-                    createParticle(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius, colors[Math.floor(i / 36) % colors.length]);
-                }, i * 25);
+                }, i * 40); // Slower
             }
         }
     };
@@ -994,11 +1219,16 @@ function initEnhancedStarfield() {
     // Clear existing stars
     starfield.innerHTML = '';
 
-    // Create three layers of stars
-    createStarLayer(starfield, 300, 1, 0.8, 'white');
-    createStarLayer(starfield, 200, 2, 0.6, '#e2e8f0');
-    createStarLayer(starfield, 150, 3, 0.4, '#94a3b8');
-    createStarLayer(starfield, 100, 4, 0.3, '#6366f1');
+    // Create layers based on device
+    if (isMobile()) {
+        createStarLayer(starfield, 80, 1, 0.8, 'white');
+        createStarLayer(starfield, 60, 2, 0.6, '#e2e8f0');
+    } else {
+        createStarLayer(starfield, 200, 1, 0.8, 'white');
+        createStarLayer(starfield, 150, 2, 0.6, '#e2e8f0');
+        createStarLayer(starfield, 100, 3, 0.4, '#94a3b8');
+        createStarLayer(starfield, 80, 4, 0.3, '#6366f1');
+    }
 }
 
 function createStarLayer(container, count, size, opacity, color) {
@@ -1022,8 +1252,14 @@ function createStarLayer(container, count, size, opacity, color) {
         star.style.backgroundColor = color;
         star.style.borderRadius = '50%';
         star.style.opacity = (Math.random() * 0.5 + opacity).toString();
-        star.style.animation = `starTwinkle ${duration}s infinite ${delay}s`;
-        star.style.boxShadow = `0 0 ${size * 3}px ${color}`;
+        
+        // Slower animation for mobile
+        const animDuration = isMobile() ? duration * 1.5 : duration;
+        star.style.animation = `starTwinkle ${animDuration}s infinite ${delay}s`;
+        
+        if (!isMobile()) {
+            star.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+        }
 
         container.appendChild(star);
     }
@@ -1034,248 +1270,233 @@ function createStarLayer(container, count, size, opacity, color) {
         style.id = 'starTwinkle';
         style.textContent = `
             @keyframes starTwinkle {
-                0%, 100% { opacity: ${Math.random() * 0.3 + 0.3}; }
-                50% { opacity: ${Math.random() * 0.8 + 0.5}; }
+                0%, 100% { opacity: ${isMobile() ? 0.2 : 0.3}; }
+                50% { opacity: ${isMobile() ? 0.6 : 0.8}; }
             }
         `;
         document.head.appendChild(style);
     }
 }
 
-// FREQUENT STARFALL EFFECT
+// FREQUENT STARFALL EFFECT - MOBILE OPTIMIZED
 function initFrequentStarfall() {
     const container = document.getElementById('starfall');
-    if (!container) return;
+    if (!container || isMobile()) return; // Disabled on mobile
 
     function createStarfall() {
-        // Create multiple starfalls at once for dense effect
-        const starCount = Math.floor(Math.random() * 3) + 2;
+        const starfall = document.createElement('div');
+        starfall.className = 'starfall';
 
-        for (let i = 0; i < starCount; i++) {
-            const starfall = document.createElement('div');
-            starfall.className = 'starfall';
+        // Random starting position
+        const startX = Math.random() * 100;
+        const startY = -30;
 
-            // Random starting position
-            const startX = Math.random() * 100;
-            const startY = -30;
+        // Random properties
+        const length = Math.random() * 100 + 80; // Shorter
+        const duration = Math.random() * 1.5 + 1; // Faster
+        const delay = Math.random() * 2;
 
-            // Random properties
-            const length = Math.random() * 150 + 100;
-            const duration = Math.random() * 2 + 1;
-            const delay = Math.random() * 2;
+        // Random color
+        const colors = ['#ffffff', '#e2e8f0', '#FFD700'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
 
-            // Random color with golden bias
-            const colors = ['#ffffff', '#e2e8f0', '#cbd5e1', '#FFD700', '#FFEC8B'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
+        // Apply styles
+        starfall.style.left = `${startX}%`;
+        starfall.style.top = `${startY}px`;
+        starfall.style.background = `linear-gradient(to bottom, transparent, ${color}, transparent)`;
+        starfall.style.opacity = (Math.random() * 0.4 + 0.3).toString();
+        starfall.style.filter = 'blur(0.5px)'; // Less blur
 
-            // Apply styles
-            starfall.style.left = `${startX}%`;
-            starfall.style.top = `${startY}px`;
-            starfall.style.background = `linear-gradient(to bottom, transparent, ${color}, transparent)`;
-            starfall.style.opacity = (Math.random() * 0.6 + 0.3).toString();
-            starfall.style.filter = 'blur(1px)';
+        container.appendChild(starfall);
 
-            container.appendChild(starfall);
+        // Animate
+        const animation = starfall.animate([{
+                transform: `translateY(0)`,
+                opacity: 0
+            },
+            {
+                transform: `translateY(${length}px)`,
+                opacity: 1
+            },
+            {
+                transform: `translateY(${length * 1.5}px)`,
+                opacity: 0
+            }
+        ], {
+            duration: duration * 1000,
+            delay: delay * 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
 
-            // Animate
-            const animation = starfall.animate([{
-                    transform: `translateY(0)`,
-                    opacity: 0
-                },
-                {
-                    transform: `translateY(${length}px)`,
-                    opacity: 1
-                },
-                {
-                    transform: `translateY(${length * 2}px)`,
-                    opacity: 0
-                }
-            ], {
-                duration: duration * 1000,
-                delay: delay * 1000,
-                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-            });
-
-            // Remove after animation
-            animation.onfinish = () => {
-                if (starfall.parentNode) {
-                    starfall.parentNode.removeChild(starfall);
-                }
-            };
-        }
+        // Remove after animation
+        animation.onfinish = () => {
+            if (starfall.parentNode) {
+                starfall.parentNode.removeChild(starfall);
+            }
+        };
     }
 
-    // Create frequent starfall
+    // Create less frequent starfall
     function starfallLoop() {
         createStarfall();
-        setTimeout(starfallLoop, Math.random() * 1000 + 500);
+        setTimeout(starfallLoop, Math.random() * 2000 + 1500); // Less frequent
     }
 
     // Start after delay
-    setTimeout(starfallLoop, 1000);
+    setTimeout(starfallLoop, 2000);
 }
 
-// SHOOTING STARS
+// SHOOTING STARS - MOBILE OPTIMIZED
 function initShootingStars() {
     const container = document.getElementById('shootingStars');
-    if (!container) return;
+    if (!container || isMobile()) return; // Disabled on mobile
 
     function createShootingStar() {
-        // Create multiple shooting stars
-        const starCount = Math.floor(Math.random() * 2) + 1;
+        const star = document.createElement('div');
+        star.className = 'shooting-star';
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'shooting-star';
+        // Random starting position
+        const startX = -100; // Closer
+        const startY = Math.random() * 60 + 20;
 
-            // Random starting position
-            const startX = -150;
-            const startY = Math.random() * 60 + 20;
+        // Random angle and distance
+        const angle = Math.random() * 20 + 15; // Narrower angle
+        const distance = Math.random() * 300 + 200; // Shorter distance
 
-            // Random angle and distance
-            const angle = Math.random() * 25 + 15;
-            const distance = Math.random() * 400 + 300;
+        // Random color
+        const colors = ['#ffffff', '#FFD700', '#22d3ee'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
 
-            // Random color with golden bias
-            const colors = ['#ffffff', '#FFD700', '#22d3ee', '#818cf8'];
-            const color = colors[Math.floor(Math.random() * colors.length)];
+        // Apply styles
+        star.style.left = `${startX}px`;
+        star.style.top = `${startY}%`;
+        star.style.background = `linear-gradient(90deg, transparent, ${color}, transparent)`;
+        star.style.opacity = (Math.random() * 0.4 + 0.3).toString();
+        star.style.transform = `rotate(${angle}deg)`;
 
-            // Apply styles
-            star.style.left = `${startX}px`;
-            star.style.top = `${startY}%`;
-            star.style.background = `linear-gradient(90deg, transparent, ${color}, transparent)`;
-            star.style.opacity = (Math.random() * 0.6 + 0.3).toString();
-            star.style.transform = `rotate(${angle}deg)`;
+        container.appendChild(star);
 
-            container.appendChild(star);
+        // Calculate end position
+        const endX = startX + distance * Math.cos(angle * Math.PI / 180);
+        const endY = startY + distance * Math.sin(angle * Math.PI / 180);
 
-            // Calculate end position
-            const endX = startX + distance * Math.cos(angle * Math.PI / 180);
-            const endY = startY + distance * Math.sin(angle * Math.PI / 180);
+        // Animate
+        const animation = star.animate([{
+                transform: `translate(0, 0) rotate(${angle}deg)`,
+                opacity: 0
+            },
+            {
+                transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
+                opacity: 1
+            },
+            {
+                transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
+                opacity: 0
+            }
+        ], {
+            duration: Math.random() * 1500 + 1000, // Faster
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
 
-            // Animate
-            const animation = star.animate([{
-                    transform: `translate(0, 0) rotate(${angle}deg)`,
-                    opacity: 0
-                },
-                {
-                    transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
-                    opacity: 1
-                },
-                {
-                    transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
-                    opacity: 0
-                }
-            ], {
-                duration: Math.random() * 2500 + 1500,
-                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-            });
-
-            // Remove after animation
-            animation.onfinish = () => {
-                if (star.parentNode) {
-                    star.parentNode.removeChild(star);
-                }
-            };
-        }
+        // Remove after animation
+        animation.onfinish = () => {
+            if (star.parentNode) {
+                star.parentNode.removeChild(star);
+            }
+        };
     }
 
-    // Create shooting stars frequently
+    // Create shooting stars less frequently
     function shootingStarsLoop() {
         createShootingStar();
-        setTimeout(shootingStarsLoop, Math.random() * 3000 + 2000);
+        setTimeout(shootingStarsLoop, Math.random() * 5000 + 4000); // Much less frequent
     }
 
     // Start after delay
-    setTimeout(shootingStarsLoop, 1500);
+    setTimeout(shootingStarsLoop, 3000);
 }
 
-// METEOR SHOWER
+// METEOR SHOWER - DISABLED ON MOBILE
 function initMeteorShower() {
     const container = document.getElementById('meteorShower');
-    if (!container) return;
+    if (!container || isMobile()) return; // Disabled on mobile
 
     function createMeteor() {
-        // Create meteor shower
-        const meteorCount = Math.floor(Math.random() * 3) + 1;
+        const meteor = document.createElement('div');
+        meteor.className = 'meteor';
 
-        for (let i = 0; i < meteorCount; i++) {
-            const meteor = document.createElement('div');
-            meteor.className = 'meteor';
+        // Random starting position
+        const startX = Math.random() * 100 + 100;
+        const startY = -20;
 
-            // Random starting position
-            const startX = Math.random() * 100 + 100;
-            const startY = -20;
+        // Random angle and distance
+        const angle = Math.random() * 10 + 10; // Narrower
+        const distance = Math.random() * 400 + 300; // Shorter
 
-            // Random angle and distance
-            const angle = Math.random() * 15 + 10;
-            const distance = Math.random() * 500 + 400;
+        // Apply styles
+        meteor.style.left = `${startX}%`;
+        meteor.style.top = `${startY}px`;
+        meteor.style.opacity = (Math.random() * 0.3 + 0.3).toString(); // Less opaque
+        meteor.style.transform = `rotate(${angle}deg)`;
 
-            // Apply styles
-            meteor.style.left = `${startX}%`;
-            meteor.style.top = `${startY}px`;
-            meteor.style.opacity = (Math.random() * 0.5 + 0.4).toString();
-            meteor.style.transform = `rotate(${angle}deg)`;
+        container.appendChild(meteor);
 
-            container.appendChild(meteor);
+        // Calculate end position
+        const endX = startX + distance * Math.cos(angle * Math.PI / 180);
+        const endY = startY + distance * Math.sin(angle * Math.PI / 180);
 
-            // Calculate end position
-            const endX = startX + distance * Math.cos(angle * Math.PI / 180);
-            const endY = startY + distance * Math.sin(angle * Math.PI / 180);
+        // Animate
+        const animation = meteor.animate([{
+                transform: `translate(0, 0) rotate(${angle}deg)`,
+                opacity: 0
+            },
+            {
+                transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
+                opacity: 1
+            },
+            {
+                transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
+                opacity: 0
+            }
+        ], {
+            duration: Math.random() * 2000 + 1500, // Faster
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
 
-            // Animate
-            const animation = meteor.animate([{
-                    transform: `translate(0, 0) rotate(${angle}deg)`,
-                    opacity: 0
-                },
-                {
-                    transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
-                    opacity: 1
-                },
-                {
-                    transform: `translate(${endX}px, ${endY}px) rotate(${angle}deg)`,
-                    opacity: 0
-                }
-            ], {
-                duration: Math.random() * 3000 + 2000,
-                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-            });
-
-            // Remove after animation
-            animation.onfinish = () => {
-                if (meteor.parentNode) {
-                    meteor.parentNode.removeChild(meteor);
-                }
-            };
-        }
+        // Remove after animation
+        animation.onfinish = () => {
+            if (meteor.parentNode) {
+                meteor.parentNode.removeChild(meteor);
+            }
+        };
     }
 
-    // Create meteor shower periodically
+    // Create meteor shower rarely
     function meteorLoop() {
         createMeteor();
-        setTimeout(meteorLoop, Math.random() * 5000 + 3000);
+        setTimeout(meteorLoop, Math.random() * 10000 + 8000); // Very rare
     }
 
     // Start after delay
-    setTimeout(meteorLoop, 3000);
+    setTimeout(meteorLoop, 5000);
 }
 
-// SPACE DEBRIS
+// SPACE DEBRIS - DISABLED ON MOBILE
 function initSpaceDebris() {
     const container = document.getElementById('spaceDebris');
     if (!container || isMobile()) return;
 
-    const debrisCount = 30;
+    const debrisCount = 15; // Reduced
 
     for (let i = 0; i < debrisCount; i++) {
         const debris = document.createElement('div');
         debris.className = 'debris';
 
         // Random properties
-        const size = Math.random() * 5 + 1;
+        const size = Math.random() * 3 + 1; // Smaller
         const x = Math.random() * 100;
         const y = Math.random() * 100;
-        const duration = Math.random() * 30 + 20;
+        const duration = Math.random() * 40 + 30; // Slower
         const delay = Math.random() * 10;
 
         // Apply styles
@@ -1283,7 +1504,7 @@ function initSpaceDebris() {
         debris.style.height = `${size}px`;
         debris.style.left = `${x}%`;
         debris.style.top = `${y}%`;
-        debris.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+        debris.style.opacity = (Math.random() * 0.2 + 0.1).toString();
 
         // Animation
         debris.style.animation = `debrisFloat ${duration}s linear infinite ${delay}s`;
@@ -1301,13 +1522,13 @@ function initSpaceDebris() {
                     transform: translate(0, 0) rotate(0deg);
                 }
                 25% {
-                    transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(90deg);
+                    transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg);
                 }
                 50% {
-                    transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(180deg);
+                    transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg);
                 }
                 75% {
-                    transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) rotate(270deg);
+                    transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg);
                 }
                 100% {
                     transform: translate(0, 0) rotate(360deg);
@@ -1318,8 +1539,10 @@ function initSpaceDebris() {
     }
 }
 
-// PROFESSIONAL CURSOR SYSTEM
+// PROFESSIONAL CURSOR SYSTEM - DESKTOP ONLY
 function initCursorSystem() {
+    if (isMobile()) return; // Skip on mobile
+    
     const cursorTriangle = document.getElementById('cursorTriangle');
     const cursorCircle = document.getElementById('cursorCircle');
     const cursorTrail = document.getElementById('cursorTrail');
@@ -1340,17 +1563,23 @@ function initCursorSystem() {
         mouseY = e.clientY;
     });
 
-    // Animation loop
+    // Animation loop with throttling
     function animateCursor() {
-        // Smooth movement for circle
+        const now = Date.now();
+        if (now - lastAnimationFrame < ANIMATION_THROTTLE) {
+            requestAnimationFrame(animateCursor);
+            return;
+        }
+        lastAnimationFrame = now;
+
+        // Smooth movement
         circleX += (mouseX - circleX) * 0.15;
         circleY += (mouseY - circleY) * 0.15;
 
-        // Smooth movement for trail
         trailX += (mouseX - trailX) * 0.05;
         trailY += (mouseY - trailY) * 0.05;
 
-        // Rotate triangle based on movement
+        // Rotate triangle
         const dx = mouseX - circleX;
         const dy = mouseY - circleY;
         triangleRotate = Math.atan2(dy, dx) * 180 / Math.PI + 90;
@@ -1378,13 +1607,13 @@ function initCursorSystem() {
     hoverElements.forEach(element => {
         element.addEventListener('mouseenter', () => {
             cursorTriangle.style.borderBottomColor = 'var(--primary)';
-            cursorTriangle.style.transform = `translate(-50%, -50%) rotate(${triangleRotate}deg) scale(1.3)`;
-            cursorCircle.style.width = '60px';
-            cursorCircle.style.height = '60px';
+            cursorTriangle.style.transform = `translate(-50%, -50%) rotate(${triangleRotate}deg) scale(1.2)`;
+            cursorCircle.style.width = '50px';
+            cursorCircle.style.height = '50px';
             cursorCircle.style.borderColor = 'var(--primary)';
-            cursorTrail.style.opacity = '0.6';
-            cursorTrail.style.width = '30px';
-            cursorTrail.style.height = '30px';
+            cursorTrail.style.opacity = '0.4';
+            cursorTrail.style.width = '25px';
+            cursorTrail.style.height = '25px';
         });
 
         element.addEventListener('mouseleave', () => {
@@ -1393,7 +1622,7 @@ function initCursorSystem() {
             cursorCircle.style.width = '40px';
             cursorCircle.style.height = '40px';
             cursorCircle.style.borderColor = 'var(--accent)';
-            cursorTrail.style.opacity = '0.3';
+            cursorTrail.style.opacity = '0.2';
             cursorTrail.style.width = '20px';
             cursorTrail.style.height = '20px';
         });
@@ -1429,7 +1658,8 @@ function initTheme() {
 
     // Toggle theme
     if (themeSwitch) {
-        themeSwitch.addEventListener('click', () => {
+        const eventType = isMobile() ? 'touchend' : 'click';
+        themeSwitch.addEventListener(eventType, () => {
             const isLight = !document.body.classList.contains('light-theme');
             document.body.classList.toggle('light-theme');
 
@@ -1477,8 +1707,7 @@ function initTypewriterEffect() {
         'Full Stack Developer',
         'GoldenSparrow',
         'Problem Solver',
-        'Tech Enthusiast',
-        'Creative Thinker'
+        'Tech Enthusiast'
     ];
 
     let textIndex = 0;
@@ -1501,8 +1730,8 @@ function initTypewriterEffect() {
             charIndex++;
         }
 
-        // Typing speed
-        let typeSpeed = 100;
+        // Typing speed (slower on mobile)
+        let typeSpeed = isMobile() ? 120 : 100;
 
         if (isDeleting) {
             typeSpeed /= 2;
@@ -1515,7 +1744,7 @@ function initTypewriterEffect() {
                 isPaused = false;
                 isDeleting = true;
                 setTimeout(type, 500);
-            }, 2000);
+            }, isMobile() ? 1500 : 2000); // Shorter pause on mobile
             return;
         }
 
@@ -1535,7 +1764,7 @@ function initTypewriterEffect() {
     setTimeout(type, 1000);
 }
 
-// NAVIGATION
+// NAVIGATION - MOBILE OPTIMIZED
 function initNavigation() {
     const navHamburger = document.querySelector('.nav-hamburger');
     const navMenu = document.querySelector('.nav-menu');
@@ -1543,7 +1772,9 @@ function initNavigation() {
 
     // Mobile menu toggle
     if (navHamburger && navMenu) {
-        navHamburger.addEventListener('click', () => {
+        const eventType = isMobile() ? 'touchend' : 'click';
+        navHamburger.addEventListener(eventType, (e) => {
+            if (e) e.stopPropagation();
             navHamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
             document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
@@ -1551,7 +1782,18 @@ function initNavigation() {
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!navHamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            if (navMenu.classList.contains('active') && 
+                !navHamburger.contains(e.target) && 
+                !navMenu.contains(e.target)) {
+                navHamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
                 navHamburger.classList.remove('active');
                 navMenu.classList.remove('active');
                 document.body.style.overflow = '';
@@ -1559,40 +1801,48 @@ function initNavigation() {
         });
     }
 
-    // Update active nav link on scroll
+    // Update active nav link on scroll (throttled)
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        const scrollPos = window.scrollY + 100;
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        
+        scrollTimeout = setTimeout(() => {
+            const scrollPos = window.scrollY + 100;
 
-        navItems.forEach(link => {
-            const section = document.querySelector(link.getAttribute('href'));
-            if (section) {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
+            navItems.forEach(link => {
+                const section = document.querySelector(link.getAttribute('href'));
+                if (section) {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
 
-                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                    link.classList.add('active');
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                }
+            });
+
+            // Update header background on scroll
+            const header = document.querySelector('.cosmic-nav');
+            if (header) {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(5, 5, 17, 0.98)';
+                    header.style.backdropFilter = 'blur(20px)';
                 } else {
-                    link.classList.remove('active');
+                    header.style.background = 'rgba(5, 5, 17, 0.9)';
+                    header.style.backdropFilter = 'blur(10px)';
                 }
             }
-        });
-
-        // Update header background on scroll
-        const header = document.querySelector('.cosmic-nav');
-        if (header) {
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(5, 5, 17, 0.98)';
-                header.style.backdropFilter = 'blur(30px)';
-            } else {
-                header.style.background = 'rgba(5, 5, 17, 0.9)';
-                header.style.backdropFilter = 'blur(20px)';
-            }
-        }
+        }, isMobile() ? 100 : 50); // Throttle more on mobile
     });
 
     // Close menu when clicking on a link
     navItems.forEach(link => {
-        link.addEventListener('click', () => {
+        const eventType = isMobile() ? 'touchend' : 'click';
+        link.addEventListener(eventType, () => {
             if (navHamburger && navMenu) {
                 navHamburger.classList.remove('active');
                 navMenu.classList.remove('active');
@@ -1706,8 +1956,13 @@ async function sendEmailFormspree(formData) {
     }
 }
 
-// SCROLL ANIMATIONS
+// SCROLL ANIMATIONS - MOBILE OPTIMIZED
 function initScrollAnimations() {
+    if (isMobile() && window.innerWidth < 768) {
+        // Disable scroll animations on small mobile
+        return;
+    }
+
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -1729,7 +1984,7 @@ function initScrollAnimations() {
     );
 
     animatedElements.forEach((el, index) => {
-        el.classList.add(`delay-${(index % 4) + 1}`);
+        el.classList.add(`delay-${(index % 3) + 1}`); // Fewer delays on mobile
         observer.observe(el);
     });
 }
@@ -1739,16 +1994,23 @@ function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
     if (!backToTop) return;
 
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.classList.add('visible');
-        } else {
-            backToTop.classList.remove('visible');
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
         }
+        
+        scrollTimeout = setTimeout(() => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }, isMobile() ? 100 : 50);
     });
 
     // Smooth scroll to top
-    backToTop.addEventListener('click', (e) => {
+    backToTop.addEventListener(isMobile() ? 'touchend' : 'click', (e) => {
         e.preventDefault();
         window.scrollTo({
             top: 0,
@@ -1795,45 +2057,47 @@ function initProgressBars() {
             progressFill.style.strokeDashoffset = offset;
         }
 
-        // Create gradient for progress circle
-        const svg = circle.querySelector('svg');
-        if (svg) {
-            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-            const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-            gradient.setAttribute('id', `gradient-${Math.random().toString(36).substr(2, 9)}`);
-            gradient.setAttribute('x1', '0%');
-            gradient.setAttribute('y1', '0%');
-            gradient.setAttribute('x2', '100%');
-            gradient.setAttribute('y2', '100%');
+        // Create gradient for progress circle (desktop only)
+        if (!isMobile()) {
+            const svg = circle.querySelector('svg');
+            if (svg) {
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                gradient.setAttribute('id', `gradient-${Math.random().toString(36).substr(2, 9)}`);
+                gradient.setAttribute('x1', '0%');
+                gradient.setAttribute('y1', '0%');
+                gradient.setAttribute('x2', '100%');
+                gradient.setAttribute('y2', '100%');
 
-            const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop1.setAttribute('offset', '0%');
-            stop1.setAttribute('stop-color', '#FFD700');
+                const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop1.setAttribute('offset', '0%');
+                stop1.setAttribute('stop-color', '#FFD700');
 
-            const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-            stop2.setAttribute('offset', '100%');
-            stop2.setAttribute('stop-color', '#6366f1');
+                const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop2.setAttribute('offset', '100%');
+                stop2.setAttribute('stop-color', '#6366f1');
 
-            gradient.appendChild(stop1);
-            gradient.appendChild(stop2);
-            defs.appendChild(gradient);
-            svg.appendChild(defs);
+                gradient.appendChild(stop1);
+                gradient.appendChild(stop2);
+                defs.appendChild(gradient);
+                svg.appendChild(defs);
 
-            if (progressFill) {
-                progressFill.style.stroke = `url(#${gradient.id})`;
+                if (progressFill) {
+                    progressFill.style.stroke = `url(#${gradient.id})`;
+                }
             }
         }
     });
 }
 
-// ROTATING CUBE INTERACTION
+// ROTATING CUBE INTERACTION - DESKTOP ONLY
 function initRotatingCube() {
+    if (isMobile()) return;
+    
     const rotatingCube = document.querySelector('.rotating-cube');
     if (!rotatingCube) return;
 
     let isHovering = false;
-    let rotationSpeed = 1;
-    let currentRotation = 0;
 
     // Mouse enter/leave events
     rotatingCube.addEventListener('mouseenter', () => {
@@ -1858,22 +2122,24 @@ function initRotatingCube() {
         const deltaY = e.clientY - centerY;
 
         // Calculate rotation based on mouse position
-        const rotationX = (deltaY / rect.height) * 180;
-        const rotationY = (deltaX / rect.width) * 180;
+        const rotationX = (deltaY / rect.height) * 120; // Reduced rotation
+        const rotationY = (deltaX / rect.width) * 120;
 
         rotatingCube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
     });
 }
 
-// HOVER EFFECTS
+// HOVER EFFECTS - DESKTOP ONLY
 function initHoverEffects() {
+    if (isMobile()) return;
+    
     // Add hover effect to cards
     const cards = document.querySelectorAll('.feature-card, .project-card, .education-card, .certificate-card, .info-card, .form-card');
 
     cards.forEach(card => {
         card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px)';
-            card.style.boxShadow = '0 25px 60px rgba(0, 0, 0, 0.4)';
+            card.style.transform = 'translateY(-8px)';
+            card.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
         });
 
         card.addEventListener('mouseleave', () => {
@@ -1887,7 +2153,7 @@ function initHoverEffects() {
 
     interactiveElements.forEach(element => {
         element.addEventListener('mouseenter', () => {
-            element.style.filter = 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.5))';
+            element.style.filter = 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.4))';
         });
 
         element.addEventListener('mouseleave', () => {
@@ -1896,53 +2162,15 @@ function initHoverEffects() {
     });
 }
 
-// PRELOAD IMAGES
-function preloadImages() {
-    const images = [
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-    ];
-
-    images.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-}
-
-// PARALLAX EFFECTS
-function initParallaxEffects() {
-    const auroraLayers = document.querySelectorAll('.aurora-layer');
-    const nebulaClouds = document.querySelectorAll('.nebula-cloud');
-
-    document.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-
-        // Parallax for aurora layers
-        auroraLayers.forEach((layer, index) => {
-            const speed = (index + 1) * 0.8;
-            const x = (mouseX - 0.5) * 50 * speed;
-            const y = (mouseY - 0.5) * 50 * speed;
-
-            layer.style.transform = `translate(${x}px, ${y}px)`;
-        });
-
-        // Parallax for nebula clouds
-        nebulaClouds.forEach((cloud, index) => {
-            const speed = (index + 1) * 0.5;
-            const x = (mouseX - 0.5) * 100 * speed;
-            const y = (mouseY - 0.5) * 100 * speed;
-
-            cloud.style.transform = `translate(${x}px, ${y}px)`;
-        });
-    });
-}
-
-// WINDOW RESIZE HANDLER - OPTIMIZED
+// WINDOW RESIZE HANDLER - HEAVILY THROTTLED
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+        // Update mobile detection
+        const wasMobile = isMobile();
+        document.body.classList.toggle('mobile', isMobile());
+        
         // Reinitialize effects on resize
         initEnhancedStarfield();
         updateSoundTogglePosition();
@@ -1955,14 +2183,16 @@ window.addEventListener('resize', () => {
         // If fireworks are active, adjust patterns
         if (fireworksActive && fireworksContainer) {
             fireworksContainer.innerHTML = '';
-            addFireworkPatterns();
+            if (!isMobile()) {
+                addFireworkPatterns();
+            }
         }
-    }, 250);
+    }, 500); // Longer throttle for resize
 });
 
 // PERFORMANCE OPTIMIZATION
 let lastScrollTime = 0;
-const scrollInterval = 150;
+const scrollInterval = isMobile() ? 200 : 100; // Longer interval on mobile
 
 window.addEventListener('scroll', () => {
     const now = Date.now();
@@ -2010,8 +2240,8 @@ document.addEventListener('keydown', (e) => {
         });
     }
 
-    // Arrow keys for navigation
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    // Arrow keys for navigation (desktop only)
+    if (!isMobile() && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
         e.preventDefault();
 
         const currentSection = getCurrentSection();
@@ -2087,3 +2317,50 @@ function monitorPerformance() {
 
 // Call performance monitoring
 setTimeout(monitorPerformance, 1000);
+
+// Add touch device detection CSS
+if (isMobile()) {
+    const style = document.createElement('style');
+    style.textContent = `
+        .touch-device * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .touch-device button,
+        .touch-device a {
+            cursor: pointer;
+        }
+        
+        .touch-device .hover-effect {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Prevent default touch behaviors
+if (isMobile()) {
+    document.addEventListener('touchstart', function(e) {
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    // Disable context menu on mobile
+    document.addEventListener('contextmenu', function(e) {
+        if (isMobile()) {
+            e.preventDefault();
+            return false;
+        }
+    });
+}
+
+// Optimize animations for mobile
+if (isMobile()) {
+    // Reduce animation complexity
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduceMotion.matches) {
+        document.body.classList.add('reduce-motion');
+    }
+}
