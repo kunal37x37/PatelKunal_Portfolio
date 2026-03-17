@@ -1,3 +1,27 @@
+// =============================================
+// DEVICE DETECTION & REDIRECT - YE SABSE PEHLE RUN HOGA
+// =============================================
+
+(function() {
+    // Forceful device detection
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    // Current URL
+    var currentUrl = window.location.href;
+    
+    // Agar mobile hai to simple portfolio par redirect karo
+    if (isMobile) {
+        console.log('📱 Mobile detected! Redirecting to simple portfolio...');
+        
+        if (currentUrl.includes('aurora-portfolio')) {
+            window.location.href = currentUrl.replace('aurora-portfolio', 'simple-portfolio');
+        } else {
+            window.location.href = 'simple-portfolio/';
+        }
+        return;
+    }
+})();
+
 // Professional Aurora Galaxy Portfolio JavaScript - OPTIMIZED
 
 // Detect mobile device
