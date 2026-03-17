@@ -14,7 +14,7 @@
         console.log('💻 Desktop detected! Redirecting to aurora portfolio...');
         
         if (currentUrl.includes('simple-portfolio')) {
-            window.location.href = currentUrl.replace('simple-portfolio', 'aurora-portfolio');
+            window.location.href = currentUrl.replace('Portfolio-2', 'aurora-portfolio');
         } else {
             window.location.href = 'aurora-portfolio/';
         }
