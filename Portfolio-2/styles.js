@@ -14,9 +14,9 @@
         console.log('💻 Desktop detected! Redirecting to aurora portfolio...');
         
         if (currentUrl.includes('Portfolio-2')) {
-            window.location.href = currentUrl.replace('Portfolio-2', 'aurora-portfolio');
+            window.location.href = currentUrl.replace('Portfolio-2', 'Portfolio-1');
         } else {
-            window.location.href = 'aurora-portfolio/';
+            window.location.href = 'Portfolio-1/';
         }
         return; // IMPORTANT: Yahan execution ruk jayega
     } else {
