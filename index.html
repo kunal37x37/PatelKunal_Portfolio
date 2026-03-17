@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kunal Patel | Portfolio Redirect</title>
+    <title>Kunal Patel | Portfolio</title>
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -16,90 +20,160 @@
             justify-content: center;
             color: white;
             text-align: center;
+            padding: 20px;
         }
+        
         .container {
-            padding: 2rem;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
+            padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 400px;
+            max-width: 500px;
+            width: 100%;
             border: 1px solid rgba(255,255,255,0.2);
         }
+        
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
-        p {
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
+        
         .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255,255,255,0.3);
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: white;
             animation: spin 1s ease-in-out infinite;
-            margin: 0 auto 1rem;
+            margin: 30px auto;
         }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        .device-info {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .device-info p {
+            margin: 5px 0;
+        }
+        
+        .manual-links {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .manual-link {
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .manual-link:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        .manual-link i {
+            margin-right: 8px;
+        }
     </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
+        <h1>🚀 Kunal Patel Portfolio</h1>
+        <p>Detecting your device to show the best experience...</p>
+        
         <div class="loader"></div>
-        <h1>Redirecting to Portfolio...</h1>
-        <p>Please wait while we load the best experience for your device</p>
+        
+        <div class="device-info" id="deviceInfo">
+            <p><i class="fas fa-mobile-alt"></i> <strong>Detecting device...</strong></p>
+        </div>
+        
+        <div class="manual-links">
+            <a href="aurora-portfolio/" class="manual-link" id="desktopLink">
+                <i class="fas fa-desktop"></i> Desktop Version
+            </a>
+            <a href="simple-portfolio/" class="manual-link" id="mobileLink">
+                <i class="fas fa-mobile-alt"></i> Mobile Version
+            </a>
+        </div>
     </div>
 
     <script>
+        // FORCEFUL DEVICE DETECTION - Ye kaam karega
         (function() {
-            // Device detection function
-            function detectDevice() {
-                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-                
-                // Check for mobile devices
-                const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
-                
-                // Check for tablets (iPad specifically)
-                const isTablet = /ipad|tablet|(android(?!.*mobile))/i.test(userAgent.toLowerCase()) || 
-                                (window.innerWidth >= 768 && window.innerWidth <= 1024);
-                
-                // Log for debugging
-                console.log('Device Detection:', {
-                    userAgent: userAgent,
-                    isMobile: isMobile,
-                    isTablet: isTablet,
-                    width: window.innerWidth,
-                    height: window.innerHeight
-                });
-                
-                // Return device type
-                if (isMobile && !isTablet) {
-                    return 'mobile';
-                } else {
-                    return 'desktop'; // Includes desktop and tablet
-                }
-            }
-
-            // Get device type
-            const deviceType = detectDevice();
+            // Get device info element
+            const deviceInfo = document.getElementById('deviceInfo');
             
-            // Set redirect URLs
-            const desktopPortfolio = 'Portfolio-1/'; // First portfolio (Aurora Galaxy)
-            const mobilePortfolio = 'Portfolio-2/';   // Second portfolio (Simple)
+            // Screen dimensions
+            const width = window.innerWidth;
+            const height = window.innerHeight;
             
-            // Redirect based on device
-            if (deviceType === 'mobile') {
-                console.log('Redirecting to mobile portfolio...');
-                window.location.href = mobilePortfolio;
-            } else {
-                console.log('Redirecting to desktop portfolio...');
-                window.location.href = desktopPortfolio;
+            // User agent
+            const ua = navigator.userAgent.toLowerCase();
+            
+            // Detect mobile devices (FORCEFUL DETECTION)
+            const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini|mobile|tablet|ipad/i.test(ua) || width <= 768;
+            
+            // Detect tablet
+            const isTablet = /ipad|tablet/i.test(ua) || (width >= 768 && width <= 1024 && !isMobile);
+            
+            // Final device type
+            let deviceType = 'desktop';
+            let redirectUrl = 'aurora-portfolio/'; // Default desktop
+            
+            if (isMobile) {
+                deviceType = 'mobile';
+                redirectUrl = 'simple-portfolio/';
+            } else if (isTablet) {
+                deviceType = 'tablet';
+                redirectUrl = 'aurora-portfolio/'; // Tablet par bhi desktop version
             }
+            
+            // Display device info
+            deviceInfo.innerHTML = `
+                <p><i class="fas fa-info-circle"></i> <strong>Device Information:</strong></p>
+                <p><i class="fas fa-desktop"></i> Screen: ${width} x ${height}px</p>
+                <p><i class="fas fa-globe"></i> User Agent: ${ua.substring(0, 50)}...</p>
+                <p><i class="fas fa-${deviceType === 'mobile' ? 'mobile-alt' : 'desktop'}"></i> <strong>Detected: ${deviceType.toUpperCase()}</strong></p>
+                <p style="color: #ffd700; margin-top: 10px;"><i class="fas fa-arrow-right"></i> Redirecting to ${deviceType === 'mobile' ? 'MOBILE' : 'DESKTOP'} portfolio...</p>
+            `;
+            
+            // Log to console
+            console.log('===== DEVICE DETECTION =====');
+            console.log('Screen Width:', width);
+            console.log('Screen Height:', height);
+            console.log('Is Mobile:', isMobile);
+            console.log('Is Tablet:', isTablet);
+            console.log('Device Type:', deviceType);
+            console.log('Redirecting to:', redirectUrl);
+            console.log('============================');
+            
+            // REDIRECT AFTER 2 SECONDS
+            setTimeout(function() {
+                console.log('Redirecting now...');
+                window.location.href = redirectUrl;
+            }, 2000);
         })();
     </script>
 </body>
