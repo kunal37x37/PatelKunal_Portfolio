@@ -14,9 +14,9 @@
         console.log('📱 Mobile detected! Redirecting to simple portfolio...');
         
         if (currentUrl.includes('Portfolio-1')) {
-            window.location.href = currentUrl.replace('Portfolio-1', 'simple-portfolio');
+            window.location.href = currentUrl.replace('Portfolio-1', 'Portfolio-2');
         } else {
-            window.location.href = 'simple-portfolio/';
+            window.location.href = 'Portfolio-2/';
         }
         return;
     }
