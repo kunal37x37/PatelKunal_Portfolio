@@ -1,3 +1,29 @@
+// =============================================
+// DEVICE DETECTION & REDIRECT - YE SABSE PEHLE RUN HOGA
+// =============================================
+
+(function() {
+    // Forceful device detection
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    
+    // Current URL
+    var currentUrl = window.location.href;
+    
+    // Agar DESKTOP hai (NOT mobile) to aurora portfolio par redirect karo
+    if (!isMobile) {
+        console.log('💻 Desktop detected! Redirecting to aurora portfolio...');
+        
+        if (currentUrl.includes('simple-portfolio')) {
+            window.location.href = currentUrl.replace('simple-portfolio', 'aurora-portfolio');
+        } else {
+            window.location.href = 'aurora-portfolio/';
+        }
+        return; // IMPORTANT: Yahan execution ruk jayega
+    } else {
+        console.log('📱 Mobile detected - Showing simple portfolio');
+    }
+})();
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
     // Create particles
@@ -7,7 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initCursor();
 
     // Set current year in footer
-    document.querySelector('.copyright').innerHTML = `© ${new Date().getFullYear()} Kunal Patel. All rights reserved.`;
+    const copyrightElement = document.querySelector('.copyright');
+    if (copyrightElement) {
+        copyrightElement.innerHTML = `© ${new Date().getFullYear()} Kunal Patel. All rights reserved.`;
+    }
 
     // Load saved theme
     const savedTheme = localStorage.getItem('theme');
@@ -25,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Particles Background
 function createParticles() {
     const particlesBg = document.getElementById('particles');
+    if (!particlesBg) return;
+    
     const particleCount = 50;
 
     for (let i = 0; i < particleCount; i++) {
@@ -43,7 +74,7 @@ function createParticles() {
         // Random animation
         const duration = Math.random() * 20 + 10;
         const delay = Math.random() * 5;
-        particle.style.animationDuration = `${duration}s`;
+        particle.style.animation = `float ${duration}s infinite linear`;
         particle.style.animationDelay = `${delay}s`;
 
         // Random opacity
@@ -57,6 +88,8 @@ function createParticles() {
 function initCursor() {
     const cursor = document.querySelector('.cursor');
     const follower = document.querySelector('.cursor-follower');
+    
+    if (!cursor || !follower) return;
 
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
@@ -316,4 +349,30 @@ if (profileImg) {
         this.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80';
         this.alt = 'Kunal Patel - Default Profile Image';
     };
+}
+
+// Add animation keyframes if not present
+if (!document.querySelector('#particleFloat')) {
+    const style = document.createElement('style');
+    style.id = 'particleFloat';
+    style.textContent = `
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+    `;
+    document.head.appendChild(style);
 }
