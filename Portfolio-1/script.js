@@ -14,7 +14,7 @@
         console.log('📱 Mobile detected! Redirecting to simple portfolio...');
         
         if (currentUrl.includes('aurora-portfolio')) {
-            window.location.href = currentUrl.replace('aurora-portfolio', 'simple-portfolio');
+            window.location.href = currentUrl.replace('Portfolio-1', 'simple-portfolio');
         } else {
             window.location.href = 'simple-portfolio/';
         }
