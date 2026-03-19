@@ -1498,7 +1498,6 @@ function initTypewriterEffect() {
     if (!typewriterText) return;
 
     const texts = [
-        'Computer Science Engineering Student',
         'GoldenSparrow',
         'Full Stack Developer',
         'Problem Solver',
