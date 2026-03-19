@@ -1498,8 +1498,9 @@ function initTypewriterEffect() {
     if (!typewriterText) return;
 
     const texts = [
-        'Full Stack Developer',
+        'Computer Science Engineering Student',
         'GoldenSparrow',
+        'Full Stack Developer',
         'Problem Solver',
         'Tech Enthusiast',
         'Creative Thinker'
