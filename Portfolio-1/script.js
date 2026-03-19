@@ -35,7 +35,7 @@ let fireworksActive = false;
 let clickTimeout;
 let fireworksTimeout;
 let volume = 0.3;
-const CLICKS_NEEDED = 10; // Changed from 10 to 5 for faster activation
+const CLICKS_NEEDED = 20; // Changed from 10 to 5 for faster activation
 const FIREWORKS_DURATION = 90000; // 90 seconds
 
 // Tutorial tracking - SIMPLE SESSION BASED
